@@ -14,10 +14,10 @@ download the occasional book: you might want to simply have them all.
 AdamaSHtor is a SHell script that, when run, goes to Projecto Adamastor's
 website and downloads all the ebooks available there at the time.
 
-This repository not only has [the script](fetch.sh) but also [the files that
+This repository not only has [the script](adamaSHtor.sh) but also [the files that
 were available in our last run of the script](books). In other words, if you
 download this repository, you'll also be downloading all the books.
 
-The [script](fetch.sh) has a [GPL v3 License](LICENSE), while the
+The [scripts](adamaSHtor.sh) have a [GPL v3 License](LICENSE), while the
 [books](books) are in 
 [public domain](https://en.wikipedia.org/wiki/Public_domain).
