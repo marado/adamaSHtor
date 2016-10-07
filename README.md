@@ -21,3 +21,9 @@ download this repository, you'll also be downloading all the books.
 The [scripts](adamaSHtor.sh) have a [GPL v3 License](LICENSE), while the
 [books](books) are in 
 [public domain](https://en.wikipedia.org/wiki/Public_domain).
+
+## Dependencies
+
+This shell script is written in [Bash](https://www.gnu.org/software/bash/).
+
+It also uses [HTML-XML-utils](https://www.w3.org/Tools/HTML-XML-utils/).
