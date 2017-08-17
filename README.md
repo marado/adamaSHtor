@@ -18,7 +18,7 @@ This repository not only has [the script](adamaSHtor.sh) but also [the files tha
 were available in our last run of the script](books). In other words, if you
 download this repository, you'll also be downloading all the books.
 
-The [scripts](adamaSHtor.sh) have a [GPL v3 License](LICENSE), while the
+The [script](adamaSHtor.sh) has a [GPL v3 License](LICENSE), while the
 [books](books) are in 
 [public domain](https://en.wikipedia.org/wiki/Public_domain).
 
