@@ -3,61 +3,38 @@
 # DEBUG=1
 
 # Fetch the HTML with the list of books
-[[ "$DEBUG" ]] && echo "DEBUG: 1";
+[[ "$DEBUG" ]] && echo "DEBUG: starting";
 rm -f index.html # in case we have an older version around
-[[ "$DEBUG" ]] && echo "DEBUG: 2";
-wget http://projectoadamastor.org/listageral/
+[[ "$DEBUG" ]] && echo "DEBUG: fetching catalog";
+wget -o /dev/null http://projectoadamastor.org/catalogo/
 
-[[ "$DEBUG" ]] && echo "DEBUG: 3";
+[[ "$DEBUG" ]] && echo "DEBUG: fetching book pages";
 # parse the HTML list
-nomes=$(cat index.html|hxnormalize -x -l 1000|hxselect tbody tr td:first-child a -c -s "\n")
-[[ "$DEBUG" ]] && echo "DEBUG: 4";
-links=$(
-	for a in $(
-		cat index.html| \
-		hxnormalize -x -l 1000| \
-		hxselect tbody tr td:nth-child\(4\) -c -s "\n"
-	); do
-		echo "$a"|grep href|cut -d\" -f2;
-	done;
-);
+bookpages=$(for i in $(grep prod-cat-mid-div- index.html); do echo $i|grep href; done|cut -d\' -f2)
 
-[[ "$DEBUG" ]] && echo "DEBUG: 5";
-let i=0;
-parsed=$(
-	echo "$nomes" | while read -r n; do
-		let i++;
-		l=$(echo "$links"|head -n $i|tail -n 1);
-		echo "$l $n";
-	done
-);
-
-[[ "$DEBUG" ]] && echo "DEBUG: 6";
-epubs=$(echo "$parsed"|grep -v MOBI)
-mobi=$( echo "$parsed"|grep    MOBI)
-
+rm -rf bookpages;
+mkdir bookpages;
+cd bookpages;
+for i in $bookpages; do wget -o /dev/null $i; done
+cd ..
 # cleaning up whatever is in the directory already
 rm -rf books
 mkdir books
-
-# fetch the actual books
-## epubs...
 mkdir books/epubs
-cd books/epubs
-[[ "$DEBUG" ]] && echo "DEBUG: 7";
-echo "$epubs"|while read -r b; do
-	link=$(echo "$b"|cut -d" " -f1)
-	name=$(echo "$b"|cut -d" " -f2-|cut -d\& -f1)
-	wget $link -o /dev/null -O "$name.epub"
-done
-## ...and mobis
-[[ "$DEBUG" ]] && echo "DEBUG: 8";
-mkdir ../mobi
-cd ../mobi
-echo "$mobi"|while read -r b; do
-	link=$(echo "$b"|cut -d" " -f1)
-	name=$(echo "$b"|cut -d" " -f2-|cut -d\& -f1)
-	wget $link -o /dev/null -O "$name.mobi"
+mkdir books/mobi
+	
+for p in bookpages/*; do
+	[[ "$DEBUG" ]] && echo "DEBUG: parsing $p";
+	title=$(grep Título: $p|cut -d\> -f4|cut -d \< -f1);
+	epub=$(grep data-durl $p|grep -v mobi|cut -d\" -f4);
+	mobi=$(grep data-durl $p|grep    mobi|cut -d\" -f4);
+	[[ "$DEBUG" ]] && echo "DEBUG:" && echo " * Titulo: $title" && echo " * epub:    $epub" && echo " * mobi:    $mobi";
+
+	# fetch the actual books
+	[[ "$DEBUG" ]] && echo "DEBUG: fetching epub"
+	wget $epub -o /dev/null -O "books/epubs/$title.epub"
+	[[ "$DEBUG" ]] && echo "DEBUG: fetching mobi"
+	wget $mobi -o /dev/null -O "books/mobi/$title.mobi"
 done
 
-[[ "$DEBUG" ]] && echo "DEBUG: 9";
+rm -rf bookpages
