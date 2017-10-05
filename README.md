@@ -24,6 +24,8 @@ The [script](adamaSHtor.sh) has a [GPL v3 License](LICENSE), while the
 
 ## Dependencies
 
-This shell script is written in [Bash](https://www.gnu.org/software/bash/).
-
-It also uses [HTML-XML-utils](https://www.w3.org/Tools/HTML-XML-utils/).
+This shell script is written in [Bash](https://www.gnu.org/software/bash/) and
+has the following dependencies:
+* [HTML-XML-utils](https://www.w3.org/Tools/HTML-XML-utils/)
+* [wget](https://www.gnu.org/software/wget/)
+* [html2text](http://www.mbayer.de/html2text/)
