@@ -2,6 +2,11 @@
 
 # DEBUG=1
 
+# Check dependencies (wget, html2text, HTML-XML-utils)
+type wget &>/dev/null        || { echo "wget is not installed, aborting."; exit 1; }
+type html2text &>/dev/null   || { echo "html2text is not installed, aborting."; exit 1; }
+type hxnormalize &>/dev/null || { echo "HTML-XML-utils is not installed, aborting."; exit 1; }
+
 # Fetch the HTML with the list of books
 [[ "$DEBUG" ]] && echo "DEBUG: starting";
 rm -f index.html # in case we have an older version around
