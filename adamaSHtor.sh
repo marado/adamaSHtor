@@ -33,7 +33,7 @@ for p in bookpages/*; do
 	[[ "$DEBUG" ]] && echo "DEBUG: parsing $p";
 	title=$(grep Título: $p|cut -d\> -f4|cut -d \< -f1);
 	title=$(cat $p|hxnormalize -x -l 1000|hxselect title -c|sed 's/—/;/'|cut -d\; -f1|sed 's/&#8211$//'|html2text -utf8);
-	autor=$(grep -E 'Autor:|Autora:|Autores:' $p|sed 's/.*<strong/<strong/g'|cut -d\> -f3|cut -d \< -f1|sed -e 's/^[ \t]*//'|sed 's/ //');
+	autor=$(grep -E 'Autor:|Autora:|Autores:' $p|sed 's/<br/\n/g'|grep -E 'Autor:|Autora:|Autores:'|sed 's/.*<strong/<strong/g'|cut -d\> -f3|cut -d \< -f1|sed -e 's/^[ \t]*//'|sed 's/ //');
 	epub=$(grep data-durl $p|grep -v "mobi\|-2/"|cut -d\" -f4);
 	mobi=$(grep data-durl $p|grep    "mobi\|-2/"|cut -d\" -f4);
 	[[ "$DEBUG" ]] && echo "DEBUG:" && echo " * Titulo: $title" && echo " * Autor: $autor" && echo " * epub:    $epub" && echo " * mobi:    $mobi";
